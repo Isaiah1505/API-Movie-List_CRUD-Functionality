@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Assignment2</string>
+    <string name="searchBtn">Search</string>
+    <string name="searchBarHint">Enter Movie Name</string>
+    <string name="searchPageTitle">Search For Any Movie</string>
+    <string name="noValue">Default</string>>
+    <string name="backBtn">Back To Search</string>>
+
+
+</resources>
