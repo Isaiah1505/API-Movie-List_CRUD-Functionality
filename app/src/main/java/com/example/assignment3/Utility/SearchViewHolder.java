@@ -1,6 +1,5 @@
-package com.example.assignment2.Utility;
+package com.example.assignment3.Utility;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.assignment2.R;
 
-public class MyViewHolder extends RecyclerView.ViewHolder {
+public class SearchViewHolder extends RecyclerView.ViewHolder {
 
     ImageView poster;
     TextView title;
     TextView year;
-    MovieClickListener clickListener;
-    public MyViewHolder(@NonNull View movieView, MovieClickListener clickListener) {
+
+    SearchMovieClickListener clickListener;
+    public SearchViewHolder(@NonNull View movieView, SearchMovieClickListener clickListener) {
         super(movieView);
 
         poster = movieView.findViewById(R.id.moviePoster);

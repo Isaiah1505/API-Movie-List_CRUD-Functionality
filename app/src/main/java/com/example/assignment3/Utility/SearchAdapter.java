@@ -1,49 +1,47 @@
-package com.example.assignment2.Utility;
+package com.example.assignment3.Utility;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.assignment2.Model.MovieModel;
 import com.example.assignment2.R;
+import com.example.assignment3.Model.MovieModel;
 
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
 
     List<MovieModel> movies;
     Context context;
     View movieView = null;
-    MovieClickListener clickListener;
+    SearchMovieClickListener clickListener;
 
-    public MyAdapter(Context contextList, List<MovieModel> movies) {
+    public SearchAdapter(Context contextList, List<MovieModel> movies) {
         this.movies = movies;
-        this.context = context;
+        this.context = contextList;
     }
 
-    public void setClickListener(MovieClickListener myClickListener){
+    public void setClickListener(SearchMovieClickListener myClickListener){
         this.clickListener = myClickListener ;
     }
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         movieView = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_layout, parent, false);
-        MyViewHolder myViewHolder = new MyViewHolder(movieView, this.clickListener);
+        SearchViewHolder myViewHolder = new SearchViewHolder(movieView, this.clickListener);
 
         return myViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
 
         MovieModel movie = movies.get(position);
 

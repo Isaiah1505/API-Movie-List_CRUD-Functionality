@@ -4,37 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:background="@color/mainBack"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.assignment3.View.DetailedViewActivity">
+    tools:context="com.example.assignment3.View.FavDetailedView">
 
     <Button
-        android:id="@+id/addFavBtn"
+        android:id="@+id/deleteBtn"
         android:layout_width="158dp"
         android:layout_height="50dp"
         android:backgroundTint="@color/ratingColour"
-        android:text="Add To Fav"
+        android:text="@string/deleteBtn"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.936"
+        app:layout_constraintHorizontal_bias="0.91"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.809" />
+        app:layout_constraintVertical_bias="0.821" />
 
-    <TextView
+    <EditText
         android:id="@+id/plot"
         android:layout_width="374dp"
-        android:layout_height="80dp"
+        android:layout_height="90dp"
+        android:gravity="start"
         android:text="@string/noValue"
         android:textColor="@color/black"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.547"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.722" />
+        app:layout_constraintVertical_bias="0.732" />
 
     <TextView
         android:id="@+id/rating"
@@ -79,7 +82,21 @@
         app:layout_constraintVertical_bias="0.624" />
 
     <Button
-        android:id="@+id/backBtn"
+        android:id="@+id/updateBtn"
+        android:layout_width="158dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/btnColor"
+        android:text="@string/updateBtn"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.107"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.821" />
+
+    <Button
+        android:id="@+id/backToListBtn"
         android:layout_width="158dp"
         android:layout_height="50dp"
         android:backgroundTint="@color/btnColor"
@@ -87,10 +104,10 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.083"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.809" />
+        app:layout_constraintVertical_bias="0.947" />
 
     <ImageView
         android:id="@+id/fullPoster"
@@ -132,4 +149,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.624" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

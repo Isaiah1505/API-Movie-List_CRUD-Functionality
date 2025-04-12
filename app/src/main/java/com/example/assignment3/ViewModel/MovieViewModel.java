@@ -1,4 +1,4 @@
-package com.example.assignment2.ViewModel;
+package com.example.assignment3.ViewModel;
 
 import android.util.Log;
 
@@ -7,8 +7,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.assignment2.Model.MovieModel;
-import com.example.assignment2.Utility.ApiClient;
+import com.example.assignment3.Model.MovieModel;
+import com.example.assignment3.Utility.ApiClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +23,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -28,8 +38,14 @@ public class MovieViewModel extends ViewModel {
 
     private final MutableLiveData<List<MovieModel>> movieInfo = new MutableLiveData<>();
     private final MutableLiveData<MovieModel> movieDetails = new MutableLiveData<>();
+    private final MutableLiveData<List<MovieModel>> favMovieList = new MutableLiveData<>();
     List<MovieModel> movieModelList = new ArrayList<>();
     MovieModel movieModelDetails = new MovieModel();
+    List<MovieModel> userFavMovieList = new ArrayList<>();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth userAuth;
+    private CollectionReference collectionReference = db.collection("FavMovies");
+
 
     public LiveData<List<MovieModel>> getMovieInfo(){
         return movieInfo;
@@ -37,6 +53,10 @@ public class MovieViewModel extends ViewModel {
 
     public LiveData<MovieModel> getMovieDetails() {
         return movieDetails;
+    }
+
+    public LiveData<List<MovieModel>> getFavMovieList(){
+        return favMovieList;
     }
 
     public void moviesSearch(String userQuery){
@@ -88,7 +108,7 @@ public class MovieViewModel extends ViewModel {
         ApiClient.get(idQueryUrl, new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.i("test", "Failed get");
+                Log.i("test", "Failed get: "+e);
             }
 
             @Override
@@ -120,4 +140,50 @@ public class MovieViewModel extends ViewModel {
         });
 
     }
+    // attempts to get the favourite movie list using the UserUID to search for it
+    public void getFavMovieList(String docName){
+
+        collectionReference.document(docName).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        try {
+                            // parsing a normal Object using JSON, then putting each into a MovieModel ArrayList
+                            List<Object> moviesCollection = Arrays.asList(documentSnapshot.getData().values().toArray());
+                            JSONArray moviesArray = new JSONArray(moviesCollection);
+                            for (int i = 0; i < moviesArray.length(); ++i){
+                                MovieModel favMovieItem = new MovieModel();
+                                JSONObject movieItem = moviesArray.getJSONObject(i);
+
+                                favMovieItem.setId(movieItem.getString("id"));
+                                favMovieItem.setTitle(movieItem.getString("title"));
+                                favMovieItem.setYearReleased(movieItem.getString("yearReleased"));
+                                favMovieItem.setRuntime(movieItem.getString("runtime"));
+                                favMovieItem.setGenres(movieItem.getString("genres"));
+                                favMovieItem.setMoviePosterURL(movieItem.getString("moviePosterURL"));
+                                favMovieItem.setRating(movieItem.getString("rating"));
+                                favMovieItem.setDescription(movieItem.getString("description"));
+
+                                userFavMovieList.add(favMovieItem);
+                                Log.i("test","Title: "+favMovieItem.getTitle()+"\n");
+                            }
+
+                            favMovieList.postValue(userFavMovieList);
+
+                        }catch (NullPointerException e){
+                            Log.i("test", "Null field in movies list.\n Er: "+e);
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("test", "Couldn't get list of movies.\nEr: "+e);
+                    }
+                });
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.example.assignment2.Model;
+package com.example.assignment3.Model;
 
 public class MovieModel {
 
@@ -11,7 +11,7 @@ public class MovieModel {
     private String moviePosterURL;
     private String description;
 
-    public MovieModel(){};
+    public MovieModel(){}
 
     public MovieModel(String id, String title, String yearReleased, String moviePosterURL){
         Id = id;

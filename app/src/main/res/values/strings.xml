@@ -1,10 +1,24 @@
 <resources>
-    <string name="app_name">Assignment2</string>
+    <string name="app_name">Assignment3</string>
     <string name="searchBtn">Search</string>
     <string name="searchBarHint">Enter Movie Name</string>
     <string name="searchPageTitle">Search For Any Movie</string>
-    <string name="noValue">Default</string>>
-    <string name="backBtn">Back To Search</string>>
+    <string name="noValue">Default</string>
+    <string name="backBtn">Back To Search</string>
+    <string name="deleteBtn">Delete</string>
+    <string name="updateBtn">Update</string>
+    <string name="logoutBtn">Logout</string>
+    <string name="favListToggleBtn">Favourites List</string>
+    <string name="emailHint">Email</string>
+    <string name="passHint">Password</string>
+    <string name="registerBtn">Register</string>
+    <string name="loginSwapBtn">Login To Your Account</string>
+    <string name="registerPageTitle">Register An Account</string>
+    <string name="loginBtn">Login</string>
+    <string name="registerSwapBtn">Register For An Account</string>
+    <string name="loginPageTitle">Login To Your Account</string>
+    <string name="favListTitle">Favourite Movies</string>
+    <string name="showSearchListBtn">Favourite Movies</string>
 
 
 </resources>

@@ -5,7 +5,9 @@
     <color name="mainBack">#730000</color>
     <color name="recyclerBack">#280000</color>
     <color name="ratingColour">#E2BA00</color>
-    <color name="btnColor">#8EC3DC</color>
+    <color name="btnColor">#0072BC</color>
+    <color name="favListBtn">#F6C933</color>
+    <color name="logoutBtn">#000000</color>
 
 
 </resources>
