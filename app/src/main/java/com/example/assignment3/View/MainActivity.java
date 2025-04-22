@@ -32,16 +32,27 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements SearchMovieClickListener, FavMovieClickListener {
 
+    // allows direct access to view objects from layout file
     ActivityMainBinding binding;
+    // Model class
     MovieViewModel movieViewModel;
+    // Adapter used to show search results for recyclerView
     SearchAdapter searchAdapter;
+    // Adapter used to display favourites on recyclerView
     FavAdapter favAdapter;
+    // MovieModel list for results from search
     List<MovieModel> movieList = new ArrayList<>();
+    // MovieModel Object for detailed page of a movie
     MovieModel movieDetails = new MovieModel();
+    // ArrayList passed via intent to detailedView to display
     ArrayList<String> movieDetailsArrList = new ArrayList<>();
+    // MovieModel list for results from fav List
     List<MovieModel> favMovieList = new ArrayList<>();
+    // ArrayList passed via intent to FavDetailedView to display
     ArrayList<String> favItem = new ArrayList<>();
+    // the current user's ID
     String currUserId;
+    // an instance of the FireBase Database
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     FirebaseAuth userAuth;
 
