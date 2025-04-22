@@ -63,14 +63,20 @@ public class MainActivity extends AppCompatActivity implements SearchMovieClickL
         // for the data posted to the liveData object, then append to recyclerView
         movieViewModel.getMovieInfo().observe(this, movieModel -> {
 
-            movieList = movieModel;
-            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-            binding.searchResultsRecycler.setLayoutManager(layoutManager);
+            if(!movieModel.get(0).getTitle().equals("Error")) {
 
-            searchAdapter = new SearchAdapter(getApplicationContext(), movieList);
-            binding.searchResultsRecycler.setAdapter(searchAdapter);
+                binding.errText.setText("");
+                movieList = movieModel;
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+                binding.searchResultsRecycler.setLayoutManager(layoutManager);
 
-            searchAdapter.setClickListener(this);
+                searchAdapter = new SearchAdapter(getApplicationContext(), movieList);
+                binding.searchResultsRecycler.setAdapter(searchAdapter);
+
+                searchAdapter.setClickListener(this);
+            }else{
+                binding.errText.setText(movieModel.get(0).getDescription());
+            }
 
         });
         // observed so when movieViewModel.moviesSearch(userQuery); is called, the needed
@@ -94,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements SearchMovieClickL
                 // grabs from searchbar, does blank check then queries API for results
                 String userQuery = String.valueOf(binding.searchBar.getText());
                 if(!userQuery.isBlank()) {
+                    movieList.clear();
                     movieViewModel.moviesSearch(userQuery);
                 }else{
                     Toast.makeText(MainActivity.this, "Input field can't be empty!", Toast.LENGTH_SHORT).show();
@@ -118,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements SearchMovieClickL
                 // toggles favourites page to show favourites list and show what's needed
                 Log.i("test", "Favourite Movies Displayed");
                 if(binding.searchBar.getVisibility() != View.INVISIBLE) {
+                    binding.searchResultsRecycler.setAdapter(null);
                     binding.searchBar.setVisibility(View.INVISIBLE);
                     binding.searchBtn.setVisibility(View.INVISIBLE);
                     binding.mainPageTitle.setText(R.string.favListTitle);

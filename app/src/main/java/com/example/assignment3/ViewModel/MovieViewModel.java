@@ -66,36 +66,55 @@ public class MovieViewModel extends ViewModel {
         ApiClient.get(urlWithQuery, new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.i("test", "Failed.");
+                Log.i("test", "Failed. Err: "+e);
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                assert response.body() != null;
-                // needs to be response.body().string() to get the actual response from API
-                String movieResponse = response.body().string();
 
-                JSONObject jsonResponse = null;
-                try{
-                    jsonResponse = new JSONObject(movieResponse);
-                    JSONArray jsonArr = jsonResponse.getJSONArray("Search");
-                    for (int i = 0 ; i < jsonArr.length(); ++i) {
-                        MovieModel movieModel = new MovieModel();
-                        JSONObject objElement = jsonArr.getJSONObject(i);
-                        movieModel.setTitle(objElement.getString("Title"));
-                        movieModel.setYearReleased(objElement.getString("Year"));
-                        movieModel.setMoviePosterURL(objElement.getString("Poster"));
-                        movieModel.setId(objElement.getString("imdbID"));
-                        movieModelList.add(movieModel);
+                    Log.i("test","Search started");
 
+                    JSONObject jsonResponse = null;
+                    try {
+                        String movieResponse = "";
+                        if (response.body() != null) {
+                            // needs to be response.body().string() to get the actual response from API
+                            movieResponse = response.body().string();
+                        }
+
+                        if(new JSONObject(movieResponse).getString("Response").equals("True")) {
+
+                            movieModelList.clear();
+                            jsonResponse = new JSONObject(movieResponse);
+                            JSONArray jsonArr = jsonResponse.getJSONArray("Search");
+                            for (int i = 0; i < jsonArr.length(); ++i) {
+                                MovieModel movieModel = new MovieModel();
+                                JSONObject objElement = jsonArr.getJSONObject(i);
+                                movieModel.setTitle(objElement.getString("Title"));
+                                movieModel.setYearReleased(objElement.getString("Year"));
+                                movieModel.setMoviePosterURL(objElement.getString("Poster"));
+                                movieModel.setId(objElement.getString("imdbID"));
+                                movieModelList.add(movieModel);
+
+                            }
+
+                            // posts movieModel list into LiveData obj to persist
+                            movieInfo.postValue(movieModelList);
+                        }else{
+                            // checking if there's an error from get request and posts to MainActivity
+                            String errorTitle = new JSONObject(movieResponse).getString("Error");
+                            MovieModel err = new MovieModel();
+                            err.setTitle("Error");
+                            err.setDescription(errorTitle);
+                            movieModelList.clear();
+                            movieModelList.add(err);
+                            movieInfo.postValue(movieModelList);
+                        }
+
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
                     }
 
-                    // posts movieModel list into LiveData obj to persist
-                    movieInfo.postValue(movieModelList);
-
-                }catch (JSONException e){
-                    throw new RuntimeException(e);
-                }
 
             }
         });
